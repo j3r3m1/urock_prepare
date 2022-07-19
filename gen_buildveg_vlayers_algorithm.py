@@ -209,6 +209,11 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         vegetHeightField = self.parameterAsString(parameters, self.OUTPUT_VEG_HEIGHT_FIELD, context)
         loadOutput = self.parameterAsBool(parameters, self.LOAD_OUTPUT, context)
 
+        #  If output not set, create temporary files for building and vegetation
+        if not outputVegFilepath:
+            outputVegFilepath = "veg_vector.geojson"
+        if not outputBuildFilepath:
+            outputBuildFilepath = "build_vector.geojson"
 
         # BUILDING LAYER CREATION
         # Create the building vector layer if at least building footprint and building dsm have been provided
