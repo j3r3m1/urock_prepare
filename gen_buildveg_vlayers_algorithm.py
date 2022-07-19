@@ -307,6 +307,8 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
             if veg_dsm:
                 # Get input raster vegetation srid
                 srid_vveg = veg_dsm.crs().postgisSrid()
+                if not srid_vveg: 
+                    feedback.pushInfo('Note that your vegetation layer has no SRID, thus the output has also no SRID')
                 
                 # Round raster values in order to have less vegetation polygons
                 veg_dsm = processing.run("native:roundrastervalues",
