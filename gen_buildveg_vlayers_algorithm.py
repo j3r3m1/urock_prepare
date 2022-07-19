@@ -155,7 +155,7 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFileDestination(
                 self.OUTPUT_BUILDING_FILE,
-                self.tr('Output building vector file')))
+                self.tr('Output building vector file (geojson or shp)')))
         self.addParameter(
             QgsProcessingParameterString(
                 self.OUTPUT_BUILD_HEIGHT_FIELD,
@@ -165,7 +165,7 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFileDestination(
                 self.OUTPUT_VEGETATION_FILE,
-                self.tr('Output vegetation vector file')))
+                self.tr('Output vegetation vector file (geojson or shp')))
         self.addParameter(
             QgsProcessingParameterString(
                 self.OUTPUT_VEG_HEIGHT_FIELD,
@@ -208,12 +208,12 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         outputVegFilepath = self.parameterAsString(parameters, self.OUTPUT_VEGETATION_FILE, context)
         vegetHeightField = self.parameterAsString(parameters, self.OUTPUT_VEG_HEIGHT_FIELD, context)
         loadOutput = self.parameterAsBool(parameters, self.LOAD_OUTPUT, context)
-
+        
         #  If output not set, create temporary files for building and vegetation
-        if not outputVegFilepath:
-            outputVegFilepath = "veg_vector.geojson"
-        if not outputBuildFilepath:
-            outputBuildFilepath = "build_vector.geojson"
+        if outputVegFilepath.split(".")[-1] == 'file':
+            outputVegFilepath = os.path.join(tmp_dir, "veg_vector.geojson")
+        if outputBuildFilepath.split(".")[-1] == 'file':
+            outputBuildFilepath = os.path.join(tmp_dir, "build_vector.geojson")
 
         # BUILDING LAYER CREATION
         # Create the building vector layer if at least building footprint and building dsm have been provided
