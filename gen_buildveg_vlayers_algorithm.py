@@ -47,7 +47,8 @@ from qgis.core import (QgsProcessing,
                        QgsCoordinateReferenceSystem,
                        QgsProperty,
                        QgsProcessingContext,
-                       QgsProject)
+                       QgsProject,
+                       QgsProcessingException)
 import processing
 
 
@@ -444,6 +445,20 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
+
+    def shortHelpString(self):
+        return self.tr('The gen_buildveg_vlayers is used to create building '+
+                       'and vegetation polygon vector layers.'+
+                       ' The output can directly be used as input of the URock plugin. '+
+                       'Only a single vegetation layer should be provided as input, '+
+                       'either a vegetation DSM or vegetation point data (trunk location).'
+        '\n'
+        '---------------\n'
+        'Full manual available via the <b>Help</b>-button.')
+
+    def helpUrl(self):
+        url = ""
+        return url
 
     def createInstance(self):
         return GenBuildVegVlayersAlgorithm()
