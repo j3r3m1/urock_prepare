@@ -307,14 +307,14 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         # VEGETATION LAYER CREATION
         # Create the vegetation vector layer if vegetation DSM has been provided
         if veg_dsm and inputVeglayer:
-            feedback.pushInfo('A single vegetation input should be provided, either DSM or vector')
+            raise QgsProcessingException('A single vegetation input should be provided, either DSM or vector')
         elif veg_dsm or inputVeglayer:
             # Rasterize the DSM
             if veg_dsm:
                 # Get input raster vegetation srid
                 srid_vveg = veg_dsm.crs().postgisSrid()
                 if not srid_vveg: 
-                    feedback.pushInfo('Note that your vegetation layer has no SRID, thus the output has also no SRID')
+                    feedback.pushWarning('Note that your vegetation layer has no SRID, thus the output has also no SRID')
                 
                 # Round raster values in order to have less vegetation polygons
                 veg_dsm = processing.run("native:roundrastervalues",
@@ -347,7 +347,7 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
             # Create vegetation patches from vegetation points
             elif inputVeglayer:
                 if not radiusVegField and not heightVegField:
-                    feedback.pushInfo('At least tree crown radius or tree height attribute should be provided')
+                    raise QgsProcessingException('At least tree crown radius or tree height attribute should be provided')
                 else:
                     if radiusVegField and not heightVegField:
                         distanceExpression = 'case when {0} is null then 0 else {0} end'.format(radiusVegField)
