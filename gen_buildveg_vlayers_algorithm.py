@@ -457,7 +457,7 @@ class GenBuildVegVlayersAlgorithm(QgsProcessingAlgorithm):
         'Full manual available via the <b>Help</b>-button.')
 
     def helpUrl(self):
-        url = ""
+        url = "https://github.com/j3r3m1/UMEP-Docs/blob/urock_processing/docs/source/pre-processor/Spatial%20Data%20Vector%20Generator.rst"
         return url
 
     def createInstance(self):
