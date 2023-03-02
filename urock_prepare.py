@@ -35,7 +35,7 @@ import os
 import sys
 import inspect
 
-from qgis.core import QgsApplication
+from qgis.core import QgsProcessingAlgorithm, QgsApplication
 from .urock_prepare_provider import URockPrepareProvider
 
 cmd_folder = os.path.split(inspect.getfile(inspect.currentframe()))[0]

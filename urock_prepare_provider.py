@@ -64,7 +64,7 @@ class URockPrepareProvider(QgsProcessingProvider):
         string should be a unique, short, character only string, eg "qgis" or
         "gdal". This string should not be localised.
         """
-        return 'genbvvl'
+        return 'urockprep'
 
     def name(self):
         """
