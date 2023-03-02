@@ -3,17 +3,17 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=GenBuildVegVlayers
+name=urock_prepare
 qgisMinimumVersion=3.0
-description=This plugin generates building and vegetation vector layers with height attribute using rasters (DEM, DSM, CDSM) and building footprint
+description=This plugin generates URock inputs: building and vegetation vector layers with height attribute using rasters (DEM, DSM, CDSM) and building footprint
 version=0.1
 author=Jérémy Bernard / University of Gothenburg
 email=jeremy.bernard@zaclys.net
 
 about=This plugin generates building and vegetation vector layers with height attribute using rasters (DEM, DSM, CDSM) and building footprint. They can then be used as input of the URock processing plugin
 
-tracker=https://github.com/j3r3m1/GenBuildVegVlayers/issues
-repository=https://github.com/j3r3m1/GenBuildVegVlayers
+tracker=https://github.com/j3r3m1/urock_prepare/issues
+repository=https://github.com/j3r3m1/urock_prepare
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,7 +25,7 @@ hasProcessingProvider=yes
 # Tags are comma separated with spaces allowed
 tags=urock, python
 
-homepage=https://github.com/j3r3m1/GenBuildVegVlayers
+homepage=https://github.com/j3r3m1/urock_prepare
 category=Analysis
 icon=icon.png
 # experimental flag

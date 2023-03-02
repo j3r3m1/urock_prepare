@@ -38,13 +38,13 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	urock_processing.py 
+	urock_prepare.py 
 
-PLUGINNAME = urock_processing
+PLUGINNAME = urock_prepare
 
 PY_FILES = \
 	__init__.py \
-	urock_processing.py 
+	urock_prepare.py 
 
 UI_FILES = 
 
