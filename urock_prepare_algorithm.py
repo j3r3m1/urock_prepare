@@ -265,10 +265,24 @@ class URockPrepareAlgorithm(QgsProcessingAlgorithm):
                 diff_expression = '(\"{0}@1\">\"{1}@1\") * (\"{0}@1\"-\"{1}@1\") + (\"{0}@1\" <= \"{1}@1\") * 0'.format(build_dsm_fieldname,
                                                                                                                         build_dem_fieldname)
                 
-                build_dsm = processing.run("qgis:rastercalculator", 
-                                           {'EXPRESSION':diff_expression,
-                                            'LAYERS':[build_dsm, build_dem],'CELLSIZE':0,
-                                            'EXTENT':None,'CRS':None,'OUTPUT':'TEMPORARY_OUTPUT'})["OUTPUT"]
+                build_dsm = processing.run("gdal:rastercalculator", 
+                                           {'INPUT_A':build_dsm,
+                                            'BAND_A':1,
+                                            'INPUT_B':build_dem,
+                                            'BAND_B':1,
+                                            'INPUT_C':None,
+                                            'BAND_C':None,
+                                            'INPUT_D':None,
+                                            'BAND_D':None,
+                                            'INPUT_E':None,
+                                            'BAND_E':None,
+                                            'INPUT_F':None,
+                                            'BAND_F':None,
+                                            'FORMULA':'(A>B)*(A-B)+(A<=B)*0',
+                                            'NO_DATA':None,
+                                            'RTYPE':5,
+                                            'OPTIONS':'',
+                                            'EXTRA':'','OUTPUT':'TEMPORARY_OUTPUT'})
             
             # Make valid all vector geometries
             tempoBuildinglayer = processing.run("native:fixgeometries", 
@@ -323,10 +337,28 @@ class URockPrepareAlgorithm(QgsProcessingAlgorithm):
                                           'OUTPUT':'TEMPORARY_OUTPUT',
                                           'BASE_N':10})["OUTPUT"]
                 # Rasterize by height value class
-                tempoVegFilepath = processing.run("saga:vectorisinggridclasses",
-                                                   {'GRID':veg_dsm,'CLASS_ALL':1,
-                                                    'CLASS_ID':0,'SPLIT':1,
-                                                    'POLYGONS':'TEMPORARY_OUTPUT'})["POLYGONS"]
+                    # First round raster values
+                veg_dsm_rounded = processing.run("native:roundrastervalues", 
+                                                 {'INPUT':veg_dsm,
+                                                  'BAND':1,
+                                                  'ROUNDING_DIRECTION':1,
+                                                  'DECIMAL_PLACES':0,
+                                                  'OUTPUT':'TEMPORARY_OUTPUT',
+                                                  'BASE_N':10})["OUTPUT"]
+                
+                    # Then vectorized
+                veg_vect = processing.run("native:pixelstopolygons", 
+                                          {'INPUT_RASTER':veg_dsm_rounded,
+                                           'RASTER_BAND':1,
+                                           'FIELD_NAME':'VALUE',
+                                           'OUTPUT':'TEMPORARY_OUTPUT'})["OUTPUT"]
+                
+                    # Last, groupby and union by height values
+                tempoVegFilepath = processing.run("native:dissolve",
+                                                  {'INPUT':veg_vect,
+                                                   'FIELD':['VALUE'],
+                                                   'OUTPUT':'TEMPORARY_OUTPUT'})["OUTPUT"]
+                
                 # Remove vegetation height = 0 m
                 tempoVegFilepath2 = processing.run("native:extractbyattribute", 
                                                    {'INPUT':tempoVegFilepath,'FIELD':'VALUE',
